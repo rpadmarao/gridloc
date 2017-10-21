@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+      /*
+      This is an implementation of Maidenhead Locator System.
+      http://n1sv.com/PROJECTS/How%20to%20calculate%20your%208-digit%20grid%20square.pdf
+       */
+      function chr(x) { return String.fromCharCode(x); }
+
+      function GridLoc(lat, lng) {
+        var qth = '';
+        lat += 90; lng += 180;
+        lat = lat / 10 + 0.0000001;
+        lng = lng / 20 + 0.0000001;
+
+        qth += chr(65 + lng) + chr(65 + lat);
+        lat = 10 * (lat - Math.floor(lat));
+        lng = 10 * (lng - Math.floor(lng));
+
+        qth += chr(48 + lng) + chr(48 + lat);
+        lat = 24 * (lat - Math.floor(lat));
+        lng = 24 * (lng - Math.floor(lng));
+
+        qth += chr(97 + lng) + chr(97 + lat);
+        lat = 10 * (lat - Math.floor(lat));
+        lng = 10 * (lng - Math.floor(lng));
+
+        qth += chr(48 + lng) + chr(48 + lat);
+        lat = 24 * (lat - Math.floor(lat));
+        lng = 24 * (lng - Math.floor(lng));
+
+
+        qth += chr(97 + lng) + chr(97 + lat);
+        console.log(qth);
+        return qth;
+      }
+    </script>
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+  GridLoc(36.165926,-86.723285); // expected EM66pd39et
+  GridLoc(-33.014673,116.230695); // OF86cx76ql
+  GridLoc(-55.315349,-68.794971); // FD54oq44oh
+  GridLoc(35.205535,136.56579); // PM85ge79vh
+</script>
+
+</body>
+</html>
