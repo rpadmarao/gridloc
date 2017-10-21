@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+      /*
+      This is an implementation of Maidenhead Locator System.
+      http://n1sv.com/PROJECTS/How%20to%20calculate%20your%208-digit%20grid%20square.pdf
+       */
+      function chr(x) { return String.fromCharCode(x); }
+
+      function GridLoc(lat, lng) {
+        var qth = '';
+        lat += 90; lng += 180;
+        lat = lat / 10 + 0.0000001;
+        lng = lng / 20 + 0.0000001;
+
+        qth += chr(65 + lng) + chr(65 + lat);
+        lat = 10 * (lat - Math.floor(lat));
+        lng = 10 * (lng - Math.floor(lng));
+
+        qth += chr(48 + lng) + chr(48 + lat);
+        lat = 24 * (lat - Math.floor(lat));
+        lng = 24 * (lng - Math.floor(lng));
+
+        qth += chr(97 + lng) + chr(97 + lat);
+        lat = 10 * (lat - Math.floor(lat));
+        lng = 10 * (lng - Math.floor(lng));
+
+        qth += chr(48 + lng) + chr(48 + lat);
+        lat = 24 * (lat - Math.floor(lat));
+        lng = 24 * (lng - Math.floor(lng));
+
+
+        qth += chr(97 + lng) + chr(97 + lat);
+        console.log(qth);
+        return qth;
+      }
+
+      function LocGrid(grid) {
+          var i = 0;
+          var l = new Array();
+          grid = grid.toUpperCase();
+          while (i < 10) l[i] = grid.charCodeAt(i++) - 65;
+          l[2] += 17; l[3] += 17;
+          l[6] += 17; l[7] += 17;
+          var lng = (l[0]*20 + l[2]*2 + l[4]/12 + l[6]/120 + l[8]/2880 - 180);
+          var lat = (l[1]*10 + l[3] + l[5]/24 + l[7]/240 + l[9]/5760 - 90);
+          console.log(lng);
+          console.log(lat);
+          //return new location;
+      }
+
+    </script>
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+  GridLoc(36.165926,-86.723285); // expected EM66pd39et
+  LocGrid("EM66pd39et");
+  GridLoc(-33.014673,116.230695); // OF86cx76ql
+  GridLoc(-55.315349,-68.794971); // FD54oq44oh
+  GridLoc(35.205535,136.56579); // PM85ge79vh
+</script>
+
+</body>
+</html>
