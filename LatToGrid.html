@@ -36,6 +36,21 @@
         console.log(qth);
         return qth;
       }
+
+      function LocGrid(grid) {
+          var i = 0;
+          var l = new Array();
+          grid = grid.toUpperCase();
+          while (i < 10) l[i] = grid.charCodeAt(i++) - 65;
+          l[2] += 17; l[3] += 17;
+          l[6] += 17; l[7] += 17;
+          var lng = (l[0]*20 + l[2]*2 + l[4]/12 + l[6]/120 + l[8]/2880 - 180);
+          var lat = (l[1]*10 + l[3] + l[5]/24 + l[7]/240 + l[9]/5760 - 90);
+          console.log(lng);
+          console.log(lat);
+          //return new location;
+      }
+
     </script>
     <title>Title</title>
 </head>
@@ -44,6 +59,7 @@
 <script>
 
   GridLoc(36.165926,-86.723285); // expected EM66pd39et
+  LocGrid("EM66pd39et");
   GridLoc(-33.014673,116.230695); // OF86cx76ql
   GridLoc(-55.315349,-68.794971); // FD54oq44oh
   GridLoc(35.205535,136.56579); // PM85ge79vh
