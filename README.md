@@ -24,6 +24,6 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-###References:
+### References:
 1. [farvacque] Farvacque-Vitkovic C, Godin L, Leroux H, Verdet F, Chavez R 2005. Street Addressing and the Management of Cities, World Bank, 2005
 
