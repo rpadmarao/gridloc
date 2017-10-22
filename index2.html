@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Places Searchbox</title>
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #description {
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+    }
+
+    #infowindow-content .title {
+      font-weight: bold;
+    }
+
+    #infowindow-content {
+      display: none;
+    }
+
+    #map #infowindow-content {
+      display: inline;
+    }
+
+    .pac-card {
+      margin: 10px 10px 0 0;
+      border-radius: 2px 0 0 2px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      background-color: #fff;
+      font-family: Roboto;
+    }
+
+    #pac-container {
+      padding-bottom: 12px;
+      margin-right: 12px;
+    }
+
+    .pac-controls {
+      display: inline-block;
+      padding: 5px 11px;
+    }
+
+    .pac-controls label {
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    #pac-input {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 400px;
+    }
+
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+
+    #title {
+      color: #fff;
+      background-color: #4d90fe;
+      font-size: 25px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+    #target {
+      width: 345px;
+    }
+  </style>
+</head>
+<body>
+<form>
+<input id="pac" name="pac" class="controls" type="input" placeholder='Search Box' >
+<input id="pac-input2" value="Search" class="controls" type="button" placeholder="Search Box" onclick="LocGrid(pac.value)">
+</form>
+<div id="map"></div>
+<script>
+  var markers = [];
+  var map;
+
+  function chr(x) { return String.fromCharCode(x); }
+
+  function GridLoc(lat, lng) {
+
+    var qth = '';
+    lat += 90; lng += 180;
+    lat = lat / 10 + 0.0000001;
+    lng = lng / 20 + 0.0000001;
+
+    qth += chr(65 + lng) + chr(65 + lat);
+    lat = 10 * (lat - Math.floor(lat));
+    lng = 10 * (lng - Math.floor(lng));
+
+    qth += chr(48 + lng) + chr(48 + lat);
+    lat = 24 * (lat - Math.floor(lat));
+    lng = 24 * (lng - Math.floor(lng));
+
+    qth += chr(97 + lng) + chr(97 + lat);
+    lat = 10 * (lat - Math.floor(lat));
+    lng = 10 * (lng - Math.floor(lng));
+
+    qth += chr(48 + lng) + chr(48 + lat);
+    lat = 24 * (lat - Math.floor(lat));
+    lng = 24 * (lng - Math.floor(lng));
+
+
+    qth += chr(97 + lng) + chr(97 + lat);
+    console.log(qth);
+
+
+    return qth;
+  }
+
+  function LocGrid(grid) {
+    var i = 0;
+    var l = new Array();
+    grid = grid.toUpperCase();
+    while (i < 10)
+      l[i] = grid.charCodeAt(i++) - 65;
+    l[2] += 17;
+    l[3] += 17;
+    l[6] += 17;
+    l[7] += 17;
+    var lng = (l[0]*20 + l[2]*2 + l[4]/12 + l[6]/120 + l[8]/2880 - 180);
+    var lat = (l[1]*10 + l[3] + l[5]/24 + l[7]/240 + l[9]/5760 - 90);
+    console.log(lng);
+    console.log(lat);
+    var myLatLng = {lat: lat, lng: lng};
+
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      title: 'Hello World!'
+    });
+
+    markers.push(marker);
+    //return new location;
+  }
+
+
+  // This example adds a search box to a map, using the Google Place Autocomplete
+  // feature. People can enter geographical searches. The search box will return a
+  // pick list containing a mix of places and predicted search terms.
+
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+  function initAutocomplete() {
+   map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 42.032974, lng: -93.649723},
+      zoom: 13,
+      mapTypeId: 'roadmap'
+    });
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac');
+    var searchBox = new google.maps.places.SearchBox(input);
+
+    map.controls[google.maps.ControlPosition.TOP].push(input);
+    map.controls[google.maps.ControlPosition.TOP].push(document.getElementById('pac-input2'));
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function() {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function() {
+      var places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+
+      // Clear out the old markers.
+      markers.forEach(function(marker) {
+        marker.setMap(null);
+      });
+      markers = [];
+
+      // For each place, get the icon, name and location.
+      var bounds = new google.maps.LatLngBounds();
+      places.forEach(function(place) {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+        var icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        markers.push(new google.maps.Marker({
+          map: map,
+          icon: icon,
+          title: place.name,
+          position: place.geometry.location
+        }));
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      map.fitBounds(bounds);
+    });
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo3L6AEYoMI1ot6dlyS8nVxyEgzQ0nOLc&libraries=places&callback=initAutocomplete"
+        async defer></script>
+</body>
+</html>
