@@ -21,11 +21,6 @@ export default {
       mapName: this.name + '-map'
     }
   },
-  methods: {
-    search: (value) => {
-      console.log(value) // value is the text in the search bar
-    }
-  },
   /*eslint-disable*/
   mounted: function () {
     const element = document.getElementById(this.mapName)
@@ -34,13 +29,38 @@ export default {
       center: new google.maps.LatLng(41.997498, -93.632537)
     }
 
-    const map = new google.maps.Map(element, options)
+    let map = new google.maps.Map(element, options)
 
     map.data.addListener('click', function(event){
-
+      map.setZoom(8);
+      map.setCenter(marker.getPosition());
     });
   }
-  /*eslint-enable*/
+  ,
+  methods: {
+    search: (grid) => {
+      var i = 0
+      var l = []
+      grid = grid.toUpperCase()
+      while (i < 10) {
+        l[i] = grid.charCodeAt(i++) - 65
+      }
+      l[2] += 17
+      l[3] += 17
+      l[6] += 17
+      l[7] += 17
+      var lng = (l[0] * 20 + l[2] * 2 + l[4] / 12 + l[6] / 120 + l[8] / 2880 - 180)
+      var lat = (l[1] * 10 + l[3] + l[5] / 24 + l[7] / 240 + l[9] / 5760 - 90)
+      console.log(lng)
+      console.log(lat)
+      var myLatlng = new google.maps.LatLng(lat,lng)
+      var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: 'Click to zoom'
+      });
+    }
+  }
 }
 </script>
 
