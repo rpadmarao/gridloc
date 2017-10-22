@@ -1,17 +1,29 @@
 /* global google */
-
 <template>
-  <div class='google-map' :id="mapName"></div>
+  <div>
+    <SearchBar @search="search"></SearchBar>
+    <div class='google-map' :id="mapName"></div>
+  </div>
 </template>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo3L6AEYoMI1ot6dlyS8nVxyEgzQ0nOLc" ></script>
 <script>
+import SearchBar from './SearchBar.vue'
+
 export default {
   name: 'google-map',
   props: ['name'],
+  components: {
+    'SearchBar': SearchBar
+  },
   data: function () {
     return {
       mapName: this.name + '-map'
+    }
+  },
+  methods: {
+    search: (value) => {
+      console.log(value) // value is the text in the search bar
     }
   },
   /*eslint-disable*/
@@ -25,7 +37,7 @@ export default {
     const map = new google.maps.Map(element, options)
 
     map.data.addListener('click', function(event){
-      
+
     });
   }
   /*eslint-enable*/
@@ -41,5 +53,6 @@ export default {
   bottom: 0px;
   margin: 0 auto;
   background: gray;
+  z-index: 0;
 }
 </style>
