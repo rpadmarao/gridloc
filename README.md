@@ -3,6 +3,7 @@ GridLoc!
 
 
 ## Inspiration:
+----------
 A big amount of the world's population doesn't have street addresses. Cheap smartphones and GPS's are allowing systems to be adopted as solutions for people to be able to communicate location information to each other. There's a lot of theoretical papers but very few implementations with high accuracy so we decided to work on this. 
 -Kevin 
 ----------
