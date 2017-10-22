@@ -22,8 +22,8 @@ export default {
     }
   },
   methods: {
-    search: () => {
-      console.log('SEARCH')
+    search: (value) => {
+      console.log(value) // value is the text in the search bar
     }
   },
   /*eslint-disable*/

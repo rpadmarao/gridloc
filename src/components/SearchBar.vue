@@ -2,7 +2,7 @@
   <div class="search-bar-container">
     <div class="search-bar">
       <form>
-        <input type="text" name="search-field" placeholder="Search">
+        <input type="text" name="search-field" placeholder="Search" class="search-field">
       </form>
       <img src="../assets/ic_search_black_24px.svg" class="search-icon" v-on:click="searchMap">
     </div>
@@ -14,7 +14,9 @@ export default {
   name: 'SearchBar',
   methods: {
     searchMap: function () {
-      this.$emit('search')
+      var searchText = document.getElementsByClassName('search-field')[0].value
+      console.log('searchText: ', searchText)
+      this.$emit('search', searchText)
     }
   }
 }
