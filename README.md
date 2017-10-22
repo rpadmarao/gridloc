@@ -4,10 +4,9 @@ A big amount of the world's population doesn't have street addresses. Cheap smar
 
 ----------
 
-
 Documentation
 -------------
-This project was built using vue.js and sql, mainly for HackISU 2017.
+This project was built using vue.js for HackISU Fall 2017.
 
 ## Build Setup
 
@@ -24,6 +23,16 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-### References:
+----------
+
+## Future 
+A system of a similar implementation would be used in developing countries, it'll be really helpful for both companies and clients. If fully developed it could become an official address system as well.
+
+## Challenges:
+
+## Inspirations: 
+-Kevin 
+
+## References:
 1. [farvacque] Farvacque-Vitkovic C, Godin L, Leroux H, Verdet F, Chavez R 2005. Street Addressing and the Management of Cities, World Bank, 2005
 
