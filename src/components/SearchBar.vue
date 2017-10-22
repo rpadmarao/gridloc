@@ -18,6 +18,9 @@ export default {
       console.log('searchText: ', searchText)
       this.$emit('search', searchText)
     }
+  },
+  mounted () {
+    console.log('Child is mounted')
   }
 }
 </script>

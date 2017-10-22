@@ -18,27 +18,29 @@ export default {
   },
   data: function () {
     return {
-      mapName: this.name + '-map'
+      mapName: this.name + '-map',
+      map: null
     }
   },
   /*eslint-disable*/
   mounted: function () {
+    console.log('Parent is mounted')
     const element = document.getElementById(this.mapName)
     const options = {
       zoom: 14,
       center: new google.maps.LatLng(41.997498, -93.632537)
     }
 
-    let map = new google.maps.Map(element, options)
+    this.map = new google.maps.Map(element, options)
 
-    map.data.addListener('click', function(event){
-      map.setZoom(8);
-      map.setCenter(marker.getPosition());
+    this.map.data.addListener('click', function(event) {
+      this.map.setZoom(8);
+      this.map.setCenter(marker.getPosition());
     });
-  }
-  ,
+  },
   methods: {
     search: (grid) => {
+      console.log(this.map)
       var i = 0
       var l = []
       grid = grid.toUpperCase()
@@ -56,9 +58,10 @@ export default {
       var myLatlng = new google.maps.LatLng(lat,lng)
       var marker = new google.maps.Marker({
         position: myLatlng,
-        map: map,
+        map: this.map,
         title: 'Click to zoom'
       });
+      console.log(marker.position, myLatlng)
     }
   }
 }
